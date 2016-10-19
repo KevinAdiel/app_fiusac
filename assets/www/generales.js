@@ -1,0 +1,2 @@
+var carnet;
+var carrera;

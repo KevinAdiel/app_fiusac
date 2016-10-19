@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notas app_fiusac</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/simple-sidebar.css" rel="stylesheet">
+
+<link href="css/datepicker3.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+<link href="css/bootstrap-table.css" rel="stylesheet">
+
+
+<!--Icons-->
+<script src="js/lumino.glyphs.js"></script>
+
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button id="boton" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<img src="FACING.png" height="50" width="50">
+				<a class="navbar-brand" href="#"><span>FIUSAC</span>APP</a>
+				<ul class="user-menu">
+					<li class="dropdown pull-right">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use>
+						</svg> User <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="datos.html"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Perfil</a></li>
+							<li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>
+							<li><a href="index.html"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Cerrar Sesión</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+							
+		</div><!-- /.container-fluid -->
+	</nav>
+		
+<div id="wrapper" >
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper" >
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Menú
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="datos.html">Datos Personales</a>
+                </li>
+                <li>
+                    <a href="notascursos.html">Notas de Cursos</a>
+                </li>
+                <li>
+                    <a href="cursosaprobados.html">Listado de Cursos</a>
+                </li>
+                <li>
+                    <a href="">Cursos Asignados</a>
+                </li>
+                <li>
+                    <a href="repitencia.html">Repitencia</a>
+                </li>
+                <li>
+                    <a href="inscripcion.html">Inscripción</a>
+                </li>
+                <li>
+                    <a href="resolucionesjd.html">Resoluciones JD</a>
+                </li>
+            </ul>
+      </div>
+        <!-- /#sidebar-wrapper -->
+    </div>	
+		
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+				<li class="active">Historial de Inscripción</li>
+			</ol>
+		</div><!--/.row-->
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Historial de Inscripción</h1>
+			</div>
+		</div><!--/.row-->
+				
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<table id="table" 
+						data-toggle="table" 
+						data-show-toggle="true" 
+						data-show-columns="true" 
+						data-select-item-name="toolbar1" 
+						data-sort-name="name" 
+						data-sort-order="desc"></table>																
+					</div>
+				</div>
+				</div>
+			</div><!-- /.col-->
+		</div><!-- /.row -->
+		
+	</div><!--/.main-->
+
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/chart.min.js"></script>
+	<script src="js/chart-data.js"></script>
+	<script src="js/easypiechart.js"></script>
+	<script src="js/easypiechart-data.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/bootstrap-table.js"></script>
+	
+	<script>
+	var bandera=0;
+	
+	$(window).on("orientationchange",function(){
+      	if(bandera == 1){
+  		  	alert(bandera + " Me han rotado :D!");
+      		$("#wrapper").toggleClass("toggled");
+		  	bandera = 0;
+      	}
+	});
+	
+    $("#boton").click(function(e) {
+    	e.preventDefault();
+		$("#wrapper").toggleClass("toggled");
+    	if(bandera == 0){
+    		bandera = 1;
+    	}
+	});
+	var cursos = [];
+
+		!function ($) {
+			$(document).on("click","ul.nav li.parent > a > span.icon", function(){		  
+				$(this).find('em:first').toggleClass("glyphicon-minus");	  
+			}); 
+			$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+			}(window.jQuery);
+
+			$(window).on('resize', function () {
+		  		if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+			})
+			$(window).on('resize', function () {
+		  		if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+			})
+		
+		$( document ).ready(function() {
+  			//alert("fafafa");
+  			
+			cargarInscripcion();
+		});
+		
+		function cargarInscripcion(){
+            $.ajax({
+                type: "GET",
+                url: "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
+                dataType: "json",
+                data: {
+                	peticion: 1,
+                    operacion: 'HistorialInscripcion',
+                    parametros: '201020724,09'
+				},
+                success: function (data) {
+                    tam = data.length;
+                    for(i = 0; i < tam; i++){
+                    	agregarCurso(data[i].anio, data[i].fecha);
+                    }
+                },
+                fail: function(error){
+                	alert("No se pudo establecer conexión.");
+                }
+            });
+		}
+		
+		function agregarCurso(anio, fecha){
+			var table = document.getElementById("table");			
+			var row = $("<tr><td>" +anio+ "</td><td>"+fecha+"</td></tr>");	        
+			$("#table > tbody").append(row);
+		}
+		
+		$('#table').bootstrapTable({
+			columns: [{
+    			field: 'anio',
+    			title: 'Ciclo Lectivo'
+			}, {
+        		field: 'fecha',
+	    		title: 'Fecha de Inscripción'
+			}],
+				data: cursos
+		});
+		
+		$('table').on('click','.delete',function(){
+			  $(this).parents('tr').remove();
+		});
+	</script>	
+</body>
+
+</html>

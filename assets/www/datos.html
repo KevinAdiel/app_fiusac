@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inicio app_fiusac</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/simple-sidebar.css" rel="stylesheet">
+
+<link href="css/datepicker3.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+
+<!--Icons-->
+<script src="js/lumino.glyphs.js"></script>
+
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->
+
+
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button id="boton" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<img src="FACING.png" height="50" width="50">
+				<a class="navbar-brand" href="#"><span>FIUSAC</span>APP</a>
+				<ul class="user-menu">
+					<li class="dropdown pull-right">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use>
+						</svg> User <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="datos.html"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Perfil</a></li>
+							<li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>
+							<li><a href="index.html"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Cerrar Sesión</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+							
+		</div><!-- /.container-fluid -->
+	</nav>
+		
+    <div id="wrapper" >
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper" >
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Menú
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="datos.html">Datos Personales</a>
+                </li>
+                <li>
+                    <a href="notascursos.html">Notas de Cursos</a>
+                </li>
+                <li>
+                    <a href="cursosaprobados.html">Listado de Cursos</a>
+                </li>
+                <li>
+                    <a href="">Cursos Asignados</a>
+                </li>
+                <li>
+                    <a href="repitencia.html">Repitencia</a>
+                </li>
+                <li>
+                    <a href="inscripcion.html">Inscripción</a>
+                </li>
+                <li>
+                    <a href="resolucionesjd.html">Resoluciones JD</a>
+                </li>
+            </ul>
+      </div>
+        <!-- /#sidebar-wrapper -->
+    </div>		
+	
+	
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+		<div class="row">
+		
+			<ol class="breadcrumb">
+				<li><a href="datos.html	"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+				<li class="active">Inicio</li>
+			</ol>
+		</div><!--/.row-->
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Datos Personales</h1>
+			</div>
+		</div><!--/.row-->					
+		<div class="row" >		
+       		<div class="col-md-10">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="Foto de Estudiante">
+
+              <h3 class="profile-username text-center"><div id="nombre"></div></h3>
+
+              <p class="text-muted text-center" id ="carrera"></p>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Carné</b> <b class="pull-right" id="carne"></b>
+                </li>
+                <li class="list-group-item">
+                  <b>Fecha Nacimiento</b> <b class="pull-right" id="fechanac"></b>
+                </li>
+                <li class="list-group-item">
+                  <b>Dirección</b> <b class="pull-right" id="direccion"></b>
+                </li>
+                <li class="list-group-item">
+                  <b>Correo</b> <b class="pull-right" id="correo"></b>
+                </li>
+                <li class="list-group-item">
+                  <b>Teléfono</b> <b class="pull-right" id="telefono"></b>
+                </li>
+                <li class="list-group-item">
+                  <b>Celular</b> <b class="pull-right" id="celular"> </b>
+                </li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+								
+		</div><!--/.row-->
+
+	</div>	<!--/.main-->
+
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/chart.min.js"></script>
+	<script src="js/chart-data.js"></script>
+	<script src="js/easypiechart.js"></script>
+	<script src="js/easypiechart-data.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="generales.js"></script>
+	
+	<script>
+		var bandera=0;
+		var carnet;
+		
+		$(window).on("orientationchange",function(){
+	      	if(bandera == 1){
+	  		  	alert(bandera + " Me han rotado :D!");
+	      		$("#wrapper").toggleClass("toggled");
+			  	bandera = 0;
+	      	}
+		});
+		
+	    $("#boton").click(function(e) {
+        	e.preventDefault();
+    		$("#wrapper").toggleClass("toggled");
+        	if(bandera == 0){
+        		bandera = 1;
+        	}
+    	});
+
+		$('#calendar').datepicker({
+		});
+
+		!function ($) {
+		    $(document).on("click","ul.nav li.parent > a > span.icon", function(){          
+		        $(this).find('em:first').toggleClass("glyphicon-minus");      
+		    }); 
+		    $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+		}(window.jQuery);
+
+		$(window).on('resize', function () {
+		  if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+		})
+		$(window).on('resize', function () {
+		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+		})
+
+		$( document ).ready(function() {
+		
+			cargarVariables();
+			$.ajax({
+                type: "GET",
+                url: "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
+                dataType: "json",
+                data: {
+                    peticion: 1,
+                    operacion: 'DatosPersonales',
+                    parametros: carnet
+                },
+                success: function (data) {
+                	//alert(JSON.stringify(data));
+					agregarInfo('nombre', data.nombre + ' ' + data.apellido);
+					agregarInfo('carne', data.usuarioid);
+					agregarInfo('direccion', data.direccion);
+					agregarInfo('celular', data.celular);
+					agregarInfo('telefono', data.telefono);
+					agregarInfo('correo', data.correo);
+					agregarInfo('fechanac', data.fechanacimiento);
+
+                },
+                fail: function(error){
+                	alert("No se pudo establecer conexión.");
+                }
+            });
+			//alert("HOLAA");
+			//agregarInfo("ADIOSSS");
+		});
+	
+		function cargarVariables(){
+			cadVariables = location.search.substring(1,location.search.length);
+			arrVariables = cadVariables.split("&");
+			for (i=0; i<arrVariables.length; i++) {
+			  arrVariableActual = arrVariables[i].split("=");			  
+			  if(i == 0){
+				carnet = arrVariableActual[1];
+			  }
+			}
+		}
+		
+		function agregarInfo(tipoDato, text){
+			document.getElementById(tipoDato).innerHTML = text;
+						
+		}
+	</script>	
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forms</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/datepicker3.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+	
+	<div>
+		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+			<div class="login-panel panel panel-default">
+				<div align= "center"><img alt="Logo FIUSAC" height="90" width="200"src="19.png"></div>
+				<div class="panel-heading">Inicio de sesión</div>
+				<div class="panel-body">
+					<form role="form">
+						<fieldset>
+							<div class="form-group">
+							<label>Usuario</label>
+								<input id="carnet" class="form-control" placeholder="Usuario" name="carnet" type="email" autofocus="">
+							</div>
+							<div class="form-group">
+									<label>Carrera</label>
+									<select class="form-control">
+										<option value="01">Ingeniería Civil</option>
+										<option value="02">Ingeniería Química</option>
+										<option value="03">Ingeniería Mecánica</option>
+										<option value="04">Ingeniería Eléctrica</option>
+										<option value="05">Ingeniería Industrial</option>
+										<option value="06">Ingeniería Mecánica Eléctrica</option>
+										<option value="07">Ingeniería Mecánica Industrial</option>
+										<option value="09">Ingeniería en Ciencias y Sistemas</option>
+										<option value="13">Ingeniería Electrónica</option>
+										<option value="15">Ingeniería en Industrias Agropecuarias y Forestales</option>
+										<option value="35">Ingeniería Ambiental</option>
+									</select>
+							</div>
+							<div class="form-group">
+								<label>Contraseña</label>
+								<input class="form-control" placeholder="Contraseña" name="password" type="password" value="">
+							</div>							
+							<a  class="btn btn-primary" onclick="enviarInfo()">Entrar</a>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div><!-- /.col-->
+	</div><!-- /.row -->	
+	
+		
+
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/chart.min.js"></script>
+	<script src="js/chart-data.js"></script>
+	<script src="js/easypiechart.js"></script>
+	<script src="js/easypiechart-data.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="generales.js"></script>
+
+	<script>
+		!function ($) {
+			$(document).on("click","ul.nav li.parent > a > span.icon", function(){		  
+				$(this).find('em:first').toggleClass("glyphicon-minus");	  
+			}); 
+			$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+		}(window.jQuery);
+
+		$(window).on('resize', function () {
+		  if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+		})
+		$(window).on('resize', function () {
+		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+		})
+		
+		function enviarInfo(){
+			carnet= document.getElementById("carnet").value;
+			carrera = "";
+			pagina = "datos.html";
+			nombres = "carnet,carrera";
+			pagina +="?";
+		  	nomVec = nombres.split(",");
+			for (i=0; i<nomVec.length; i++){
+				if(i == 0){
+					  pagina += nomVec[i] + "=" +carnet+"&";  
+				}else{
+					  pagina += nomVec[i] + "=" + carrera +"&";
+			  }	    
+			}
+			pagina = pagina.substring(0,pagina.length-1);
+			//alert(pagina);
+			location.href=pagina;
+		}
+	</script>	
+</body>
+
+</html>
