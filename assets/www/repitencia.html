@@ -114,7 +114,8 @@
 						data-select-item-name="toolbar1" 
 						data-pagination="true" 
 						data-sort-name="name" 
-						data-sort-order="desc"></table>																
+						data-sort-order="desc">							
+						</table>															
 					</div>
 				</div>
 				</div>
@@ -196,10 +197,19 @@
             });
 		}
 		
+		var newdata = [];
+
 		function agregarCurso(curso, nombre, repitencia){
-			var table = document.getElementById("table");			
+			var table = document.getElementById("table");	
+		    var mydata = {
+      			"curso": curso,
+    			"nombre": nombre,
+        		"repitencia": repitencia
+    		};		
 			var row = $("<tr><td>" +curso+ "</td><td>"+nombre+"</td><td>"+repitencia+"</td></tr>");	        
-			$("#table > tbody").append(row);
+			//$("#table > tbody").append(row);
+	    	newdata.push(mydata);
+    		$('#table').bootstrapTable("load", newdata);
 		}
 		
 		$('#table').bootstrapTable({
@@ -219,6 +229,7 @@
 		$('table').on('click','.delete',function(){
 			  $(this).parents('tr').remove();
 		});
+
 	</script>	
 </body>
 
