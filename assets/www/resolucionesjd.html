@@ -143,7 +143,6 @@
 	
 	$(window).on("orientationchange",function(){
       	if(bandera == 1){
-  		  	alert(bandera + " Me han rotado :D!");
       		$("#wrapper").toggleClass("toggled");
 		  	bandera = 0;
       	}
@@ -156,6 +155,10 @@
     		bandera = 1;
     	}
 	});
+	$( document ).ready(function() {
+		alert("Fadfa");
+	});
+
     
 		!function ($) {
 			$(document).on("click","ul.nav li.parent > a > span.icon", function(){		  

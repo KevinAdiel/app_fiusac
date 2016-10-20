@@ -158,7 +158,6 @@
 		
 		$(window).on("orientationchange",function(){
 	      	if(bandera == 1){
-	  		  	alert(bandera + " Me han rotado :D!");
 	      		$("#wrapper").toggleClass("toggled");
 			  	bandera = 0;
 	      	}
@@ -202,7 +201,6 @@
                     parametros: carnet
                 },
                 success: function (data) {
-                	//alert(JSON.stringify(data));
 					agregarInfo('nombre', data.nombre + ' ' + data.apellido);
 					agregarInfo('carne', data.usuarioid);
 					agregarInfo('direccion', data.direccion);
@@ -216,8 +214,6 @@
                 	alert("No se pudo establecer conexión.");
                 }
             });
-			//alert("HOLAA");
-			//agregarInfo("ADIOSSS");
 		});
 	
 		function cargarVariables(){
