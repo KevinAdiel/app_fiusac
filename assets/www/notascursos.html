@@ -15,6 +15,7 @@
 
 <!--Icons-->
 <script src="js/lumino.glyphs.js"></script>
+<script src="js/general.js"></script>
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -64,13 +65,17 @@
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand"><a href="#"> Menú </a></li>
-				<li class="active"><a href="datos.html">Datos Personales</a></li>
-				<li><a href="notascursos.html">Notas de Cursos</a></li>
-				<li><a href="cursosaprobados.html">Listado de Cursos</a></li>
+				<li class="active"><a href="" onclick="enviarInfo('datos')">Datos
+						Personales</a></li>
+				<li><a href="" onclick="enviarInfo('notascursos')">Notas de
+						Cursos</a></li>
+				<li><a href="" onclick="enviarInfo('cursosaprobados')">Listado
+						de Cursos</a></li>
 				<li><a href="">Cursos Asignados</a></li>
-				<li><a href="repitencia.html">Repitencia</a></li>
-				<li><a href="inscripcion.html">Inscripción</a></li>
-				<li><a href="resolucionesjd.html">Resoluciones JD</a></li>
+				<li><a href="" onclick="enviarInfo('repitencia')">Repitencia</a></li>
+				<li><a href="" onclick="enviarInfo('inscripcion')">Inscripción</a></li>
+				<li><a href="" onclick="enviarInfo('resolucionesjd')">Resoluciones
+						JD</a></li>
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -119,10 +124,6 @@
 							<div class="form-group">
 								<label>Año</label> <select id="anio" name="anio"
 									class="form-control">
-									<option value='2016'>2016</option>
-									<option value='2015'>2015</option>
-									<option value='2014'>2014</option>
-									<option value='2013'>2013</option>
 								</select>
 							</div>
 						</div>
@@ -201,16 +202,15 @@
 		})
 
 		$(document).ready(function() {
-			//alert("fafafa");
-
+			cargarVariables();
+			llenarCombo();
 		});
 		var newdata = [];
 
 		function cargarCursos() {
 			periodo = document.getElementById("periodo").value;
 			anio = document.getElementById("anio").value;
-			param = '201020724,09,' + periodo + ',' + anio;
-			//alert(param);
+			var param = carnet + ',' + carrera + ',' + periodo + ',' + anio;
 
 			$
 					.ajax({
@@ -223,7 +223,7 @@
 							parametros : param
 						},
 						success : function(data) {
-							 newdata = [];
+							newdata = [];
 							tam = data.length;
 							for (i = 0; i < tam; i++) {
 								agregarCurso(data[i].curso, data[i].nombre,
@@ -249,6 +249,18 @@
 			};
 			newdata.push(mydata);
 			$('#table').bootstrapTable("load", newdata);
+		}
+
+		function llenarCombo() {
+			var fecha = new Date();
+			var anio = fecha.getFullYear()
+
+			for (i = anio; i >= 2005; i--) {
+				$('#anio').append($('<option>', {
+					value : i,
+					text : i
+				}));
+			}
 		}
 
 		$('#table').bootstrapTable({

@@ -15,6 +15,7 @@
 
 <!--Icons-->
 <script src="js/lumino.glyphs.js"></script>
+<script src="js/general.js"></script>
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -64,13 +65,17 @@
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand"><a href="#"> Menú </a></li>
-				<li class="active"><a href="datos.html">Datos Personales</a></li>
-				<li><a href="notascursos.html">Notas de Cursos</a></li>
-				<li><a href="cursosaprobados.html">Listado de Cursos</a></li>
+				<li class="active"><a href="" onclick="enviarInfo('datos')">Datos
+						Personales</a></li>
+				<li><a href="" onclick="enviarInfo('notascursos')">Notas de
+						Cursos</a></li>
+				<li><a href="" onclick="enviarInfo('cursosaprobados')">Listado
+						de Cursos</a></li>
 				<li><a href="">Cursos Asignados</a></li>
-				<li><a href="repitencia.html">Repitencia</a></li>
-				<li><a href="inscripcion.html">Inscripción</a></li>
-				<li><a href="resolucionesjd.html">Resoluciones JD</a></li>
+				<li><a href="" onclick="enviarInfo('repitencia')">Repitencia</a></li>
+				<li><a href="" onclick="enviarInfo('inscripcion')">Inscripción</a></li>
+				<li><a href="" onclick="enviarInfo('resolucionesjd')">Resoluciones
+						JD</a></li>
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -163,12 +168,12 @@
 		})
 
 		$(document).ready(function() {
-			//alert("fafafa");
-
+			cargarVariables();
 			cargarInscripcion();
 		});
 
 		function cargarInscripcion() {
+			var param = carnet + ',' + carrera;
 			$
 					.ajax({
 						type : "GET",
@@ -177,7 +182,7 @@
 						data : {
 							peticion : 1,
 							operacion : 'HistorialInscripcion',
-							parametros : '201020724,09'
+							parametros : param
 						},
 						success : function(data) {
 							tam = data.length;

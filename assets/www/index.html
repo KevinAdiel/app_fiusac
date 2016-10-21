@@ -39,7 +39,7 @@
 									value="">
 							</div>
 							<div class="form-group">
-								<label>Carrera</label> <select class="form-control">
+								<label>Carrera</label> <select class="form-control" id="carrera">
 									<option value="01">Ingeniería Civil</option>
 									<option value="02">Ingeniería Química</option>
 									<option value="03">Ingeniería Mecánica</option>
@@ -99,7 +99,7 @@
 
 		function enviarInfo() {
 			carnet = document.getElementById("carnet").value;
-			carrera = "";
+			carrera = document.getElementById("carrera").value;
 			pagina = "datos.html";
 			nombres = "carnet,carrera";
 			pagina += "?";
