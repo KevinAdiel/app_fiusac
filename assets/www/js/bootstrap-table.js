@@ -157,25 +157,25 @@
             return 'Loading, please wait…';
         },
         formatRecordsPerPage: function (pageNumber) {
-            return sprintf('%s records per page', pageNumber);
+            return sprintf('%s registros por p\u00E1gina', pageNumber);
         },
         formatShowingRows: function (pageFrom, pageTo, totalRows) {
-            return sprintf('Showing %s to %s of %s rows', pageFrom, pageTo, totalRows);
+            return sprintf('Mostrando %s a %s de %s registros', pageFrom, pageTo, totalRows);
         },
         formatSearch: function () {
-            return 'Search';
+            return 'B\u00FAsqueda';
         },
         formatNoMatches: function () {
           //  return 'No matching records found';
         },
         formatRefresh: function () {
-            return 'Refresh';
+            return 'Recargar';
         },
         formatToggle: function () {
             return 'Toggle';
         },
         formatColumns: function () {
-            return 'Columns';
+            return 'Columnas';
         },
 
         onAll: function (name, args) {return false;},

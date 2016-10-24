@@ -16,6 +16,7 @@
 <!--Icons-->
 <script src="js/lumino.glyphs.js"></script>
 <script src="js/general.js"></script>
+<script src="sqlite/notascursos.js"></script>
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -76,6 +77,8 @@
 				<li><a href="" onclick="enviarInfo('inscripcion')">Inscripción</a></li>
 				<li><a href="" onclick="enviarInfo('resolucionesjd')">Resoluciones
 						JD</a></li>
+				<li><a href="" onclick="enviarInfo('desasignacion')">Desasignaciones</a></li>
+
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -98,7 +101,7 @@
 		</div>
 		<!--/.row-->
 
-
+		<div id="content"></div>
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
@@ -136,10 +139,12 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">Notas</div>
 						<div class="panel-body">
-							<table id="table" data-toggle="table" data-show-toggle="true"
-								data-show-columns="true" data-search="true"
-								data-select-item-name="toolbar1" data-pagination="true"
-								data-sort-name="name" data-sort-order="desc"></table>
+							<table id="table-notas" data-toggle="table"
+								data-show-toggle="true" data-show-columns="true"
+								data-search="true" data-select-item-name="toolbar1"
+								data-pagination="true" data-sort-name="name"
+								data-sort-order="desc"></table>
+							<div id="vacio"></div>
 						</div>
 					</div>
 				</div>
@@ -165,7 +170,6 @@
 
 		$(window).on("orientationchange", function() {
 			if (bandera == 1) {
-				alert(bandera + " Me han rotado :D!");
 				$("#wrapper").toggleClass("toggled");
 				bandera = 0;
 			}
@@ -202,6 +206,7 @@
 		})
 
 		$(document).ready(function() {
+			onBodyLoad();
 			cargarVariables();
 			llenarCombo();
 		});
@@ -211,12 +216,14 @@
 			periodo = document.getElementById("periodo").value;
 			anio = document.getElementById("anio").value;
 			var param = carnet + ',' + carrera + ',' + periodo + ',' + anio;
-
+			$('#content').html(
+					'<div align="center"><img src="ajax-loader.gif"/></div>');
 			$
 					.ajax({
 						type : "GET",
 						url : "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
 						dataType : "json",
+						timeout : 10000,
 						data : {
 							peticion : 1,
 							operacion : 'NotasCursosAsignados',
@@ -225,15 +232,34 @@
 						success : function(data) {
 							newdata = [];
 							tam = data.length;
+							//vaciarTablaNotas();
+							eliminarSemestre(periodo, anio);
+							if (tam == 0) {
+								$('#vacio')
+										.html(
+												'<div align="center"><h5>No tiene cursos asignados para este periodo<h5></div>');
+							} else {
+								$('#vacio').html('');
+							}
 							for (i = 0; i < tam; i++) {
 								agregarCurso(data[i].curso, data[i].nombre,
 										data[i].seccion,
 										data[i].zonalaboratorio, data[i].zona,
 										data[i].examenfinal);
+								AddValueToDB(data[i].curso, data[i].nombre,
+										data[i].seccion,
+										data[i].zonalaboratorio, data[i].zona,
+										data[i].examenfinal, periodo, anio);
 							}
+							$('#content').html('');
 						},
-						fail : function(error) {
-							alert("No se pudo establecer conexión.");
+						error : function(error) {
+							$('#content')
+									.html(
+											'<div align="center"><h4>Sin Conexión<h2></div>');
+							newdata = [];
+							$('#table-notas').bootstrapTable("load", newdata);
+							ListDBValues(periodo, anio);
 						}
 					});
 		}
@@ -248,7 +274,7 @@
 				"examen" : examen
 			};
 			newdata.push(mydata);
-			$('#table').bootstrapTable("load", newdata);
+			$('#table-notas').bootstrapTable("load", newdata);
 		}
 
 		function llenarCombo() {
@@ -263,7 +289,7 @@
 			}
 		}
 
-		$('#table').bootstrapTable({
+		$('#table-notas').bootstrapTable({
 			columns : [ {
 				field : 'curso',
 				title : 'Curso'

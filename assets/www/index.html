@@ -8,6 +8,7 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/datepicker3.css" rel="stylesheet">
 <link href="css/styles.css" rel="stylesheet">
+<script src="js/general.js"></script>
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -97,7 +98,17 @@
 				$('#sidebar-collapse').collapse('hide')
 		})
 
+		$(document).ready(function() {
+			eliminarTablaInscripcion();
+			eliminarTablaRepitencia();
+			eliminarTablaResolucionjd();
+			eliminarTablaDatosListado();
+			eliminarTablaCursoAprobado();
+			eliminarTablaEstudiante();
+		});
+
 		function enviarInfo() {
+
 			carnet = document.getElementById("carnet").value;
 			carrera = document.getElementById("carrera").value;
 			pagina = "datos.html";

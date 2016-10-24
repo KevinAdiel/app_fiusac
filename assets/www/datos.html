@@ -14,6 +14,7 @@
 <!--Icons-->
 <script src="js/lumino.glyphs.js"></script>
 <script src="js/general.js"></script>
+<script src="sqlite/datos.js"></script>
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -75,6 +76,8 @@
 				<li><a href="" onclick="enviarInfo('inscripcion')">Inscripción</a></li>
 				<li><a href="" onclick="enviarInfo('resolucionesjd')">Resoluciones
 						JD</a></li>
+				<li><a href="" onclick="enviarInfo('desasignacion')">Desasignaciones</a></li>
+
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -98,6 +101,7 @@
 			</div>
 		</div>
 		<!--/.row-->
+		<div id="content"></div>
 		<div class="row">
 			<div class="col-md-10">
 
@@ -192,8 +196,11 @@
 		$(document)
 				.ready(
 						function() {
-
+							$('#content')
+									.html(
+											'<div align="center"><img src="ajax-loader.gif"/></div>');
 							cargarVariables();
+							onBodyLoad();
 							$
 									.ajax({
 										type : "GET",
@@ -205,6 +212,7 @@
 											parametros : carnet
 										},
 										success : function(data) {
+											vaciarTablaEstudiante();
 											agregarInfo('nombre', data.nombre
 													+ ' ' + data.apellido);
 											agregarInfo('carne', data.usuarioid);
@@ -216,10 +224,21 @@
 											agregarInfo('correo', data.correo);
 											agregarInfo('fechanac',
 													data.fechanacimiento);
+											AddValueToDB(data.nombre,
+													data.apellido,
+													data.usuarioid,
+													data.direccion,
+													data.celular,
+													data.telefono, data.correo,
+													data.fechanacimiento);
+											$('#content').html('');
 
 										},
-										fail : function(error) {
-											alert("No se pudo establecer conexión.");
+										error : function(error) {
+											$('#content')
+													.html(
+															'<div align="center"><h4>Sin Conexión<h2></div>');
+											ListDBValues();
 										}
 									});
 						});

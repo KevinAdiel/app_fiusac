@@ -16,6 +16,7 @@
 <!--Icons-->
 <script src="js/lumino.glyphs.js"></script>
 <script src="js/general.js"></script>
+<script src="sqlite/inscripcion.js"></script>
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -76,6 +77,8 @@
 				<li><a href="" onclick="enviarInfo('inscripcion')">Inscripción</a></li>
 				<li><a href="" onclick="enviarInfo('resolucionesjd')">Resoluciones
 						JD</a></li>
+				<li><a href="" onclick="enviarInfo('desasignacion')">Desasignaciones</a></li>
+
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -98,14 +101,17 @@
 		</div>
 		<!--/.row-->
 
+		<div id="content"></div>
+		<div id="lbUsers"></div>
 
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<table id="table" data-toggle="table" data-show-toggle="true"
-							data-show-columns="true" data-select-item-name="toolbar1"
-							data-sort-name="name" data-sort-order="desc"></table>
+						<table id="table-inscripcion" data-toggle="table"
+							data-show-toggle="true" data-show-columns="true"
+							data-select-item-name="toolbar1" data-sort-name="name"
+							data-sort-order="desc"></table>
 					</div>
 				</div>
 			</div>
@@ -131,7 +137,6 @@
 
 		$(window).on("orientationchange", function() {
 			if (bandera == 1) {
-				alert(bandera + " Me han rotado :D!");
 				$("#wrapper").toggleClass("toggled");
 				bandera = 0;
 			}
@@ -168,46 +173,58 @@
 		})
 
 		$(document).ready(function() {
+			onBodyLoad();
 			cargarVariables();
 			cargarInscripcion();
 		});
 
 		function cargarInscripcion() {
 			var param = carnet + ',' + carrera;
+			$('#content').html(
+					'<div align="center"><img src="ajax-loader.gif"/></div>');
+			var page = $(this).attr('data');
+			var dataString = 'page=' + page;
 			$
 					.ajax({
 						type : "GET",
 						url : "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
 						dataType : "json",
+						timeout : 10000,
 						data : {
 							peticion : 1,
 							operacion : 'HistorialInscripcion',
 							parametros : param
 						},
 						success : function(data) {
+							vaciarTablaInscripcion();
 							tam = data.length;
 							for (i = 0; i < tam; i++) {
-								agregarCurso(data[i].anio, data[i].fecha);
+								agregarInscripcion(data[i].anio, data[i].fecha);
+								AddValueToDB(data[i].anio, data[i].fecha);
 							}
+							$('#content').html('');
 						},
-						fail : function(error) {
-							alert("No se pudo establecer conexión.");
+						error : function(error) {
+							$('#content')
+									.html(
+											'<div align="center"><h4>Sin Conexión<h2></div>');
+							ListDBValues();
 						}
 					});
 		}
 
 		var newdata = [];
 
-		function agregarCurso(anio, fecha) {
+		function agregarInscripcion(anio, fecha) {
 			var mydata = {
 				"anio" : anio,
 				"fecha" : fecha
 			};
 			newdata.push(mydata);
-			$('#table').bootstrapTable("load", newdata);
+			$('#table-inscripcion').bootstrapTable("load", newdata);
 		}
 
-		$('#table').bootstrapTable({
+		$('#table-inscripcion').bootstrapTable({
 			columns : [ {
 				field : 'anio',
 				title : 'Ciclo Lectivo'

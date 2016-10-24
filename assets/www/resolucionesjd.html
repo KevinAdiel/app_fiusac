@@ -14,6 +14,7 @@
 <!--Icons-->
 <script src="js/lumino.glyphs.js"></script>
 <script src="js/general.js"></script>
+<script src="sqlite/resolucionesjd.js"></script>
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -73,6 +74,8 @@
 				<li><a href="" onclick="enviarInfo('inscripcion')">Inscripción</a></li>
 				<li><a href="" onclick="enviarInfo('resolucionesjd')">Resoluciones
 						JD</a></li>
+				<li><a href="" onclick="enviarInfo('desasignacion')">Desasignaciones</a></li>
+
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -94,7 +97,7 @@
 			</div>
 		</div>
 		<!--/.row-->
-
+		<div id="content"></div>
 		<div class="row" id="panel"></div>
 
 	</div>
@@ -125,6 +128,7 @@
 			}
 		});
 		$(document).ready(function() {
+			onBodyLoad();
 			cargarVariables();
 			cargarResolucionesJD();
 		});
@@ -152,11 +156,14 @@
 
 		function cargarResolucionesJD() {
 			var param = carnet + ',' + carrera;
+			$('#content').html(
+					'<div align="center"><img src="ajax-loader.gif"/></div>');
 			$
 					.ajax({
 						type : "GET",
 						url : "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
 						dataType : "json",
+						timeout : 10000,
 						data : {
 							peticion : 1,
 							operacion : 'ResolucionesJD',
@@ -164,13 +171,20 @@
 						},
 						success : function(data) {
 							tam = data.length;
+							vaciarTablaResolucionjd();
 							for (i = 0; i < tam; i++) {
 								agregarResolucion(data[i].aprobado,
 										data[i].acuerdo, data[i].resolucion);
+								AddValueToDB(data[i].aprobado, data[i].acuerdo,
+										data[i].resolucion);
 							}
+							$('#content').html('');
 						},
-						fail : function(error) {
-							alert("No se pudo establecer conexión.");
+						error : function(error) {
+							$('#content')
+									.html(
+											'<div align="center"><h4>Sin Conexión<h2></div>');
+							ListDBValues();
 						}
 					});
 		}

@@ -16,6 +16,7 @@
 <!--Icons-->
 <script src="js/lumino.glyphs.js"></script>
 <script src="js/general.js"></script>
+<script src="sqlite/cursosaprobados.js"></script>
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -76,6 +77,8 @@
 				<li><a href="" onclick="enviarInfo('inscripcion')">Inscripción</a></li>
 				<li><a href="" onclick="enviarInfo('resolucionesjd')">Resoluciones
 						JD</a></li>
+				<li><a href="" onclick="enviarInfo('desasignacion')">Desasignaciones</a></li>
+
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -98,6 +101,7 @@
 		</div>
 		<!--/.row-->
 
+		<div id="content"></div>
 
 		<div class="row">
 			<div class="col-lg-12">
@@ -130,12 +134,14 @@
 							</div>
 						</div>
 						<!--/.panel-->
-						<table id="table" data-toggle="table" id="tablacurso"
+						<table id="table-listado" data-toggle="table" id="tablacurso"
 							data-row-style="rowStyle" data-show-refresh="true"
 							data-show-toggle="true" data-show-columns="true"
 							data-search="true" data-select-item-name="toolbar1"
 							data-pagination="true" data-sort-name="name"
 							data-sort-order="desc"></table>
+						<div id="vacio"></div>
+
 						<script>
 							$(function() {
 								$('#hover, #striped, #condensed')
@@ -201,7 +207,6 @@
 
 		$(window).on("orientationchange", function() {
 			if (bandera == 1) {
-				alert(bandera + " Me han rotado :D!");
 				$("#wrapper").toggleClass("toggled");
 				bandera = 0;
 			}
@@ -237,7 +242,7 @@
 
 		var cursos = [];
 
-		$('#table').bootstrapTable({
+		$('#table-listado').bootstrapTable({
 			columns : [ {
 				field : 'no',
 				title : 'No.'
@@ -266,10 +271,13 @@
 		$(document).ready(function() {
 			cargarVariables();
 			cargarCursos();
-
+			onBodyLoad();
+			onBodyLoad2();
 		});
 		function cargarCursos() {
 			var param = carnet + ',' + carrera + ',201020724,1,1';
+			$('#content').html(
+					'<div align="center"><img src="ajax-loader.gif"/></div>');
 			$
 					.ajax({
 						type : "GET",
@@ -281,6 +289,8 @@
 							parametros : param
 						},
 						success : function(data) {
+							vaciarTablaDatosListado();
+							vaciarTablaCursos();
 							agregarInfo("id", "NOMBRE: " + data.Carnet + " - "
 									+ data.Nombre);
 							agregarInfo("carrera", "CARRERA: "
@@ -295,7 +305,19 @@
 							agregarInfo("promedio", "PROMEDIO: "
 									+ data.Promedio);
 
+							AddValueToDB(data.Carnet, data.Nombre,
+									data.CodigoCarrera, data.NombreCarrera,
+									data.CursosAprobados, data.CursosProblema,
+									data.Creditos, data.Promedio);
+
 							tam = data.ListaCursosAprobados.length;
+							if (tam == 0) {
+								$('#vacio')
+										.html(
+												'<div align="center"><h5>No tiene cursos aprobados<h5></div>');
+							} else {
+								$('#vacio').html('');
+							}
 							for (i = 0; i < tam; i++) {
 								agregarCurso(
 										data.ListaCursosAprobados[i].Numero,
@@ -305,10 +327,23 @@
 										data.ListaCursosAprobados[i].FechaAprobacion,
 										data.ListaCursosAprobados[i].Nota,
 										data.ListaCursosAprobados[i].FormaAprobacionListado);
+								AddValueToDB2(
+										data.ListaCursosAprobados[i].Numero,
+										data.ListaCursosAprobados[i].CodigoCurso,
+										data.ListaCursosAprobados[i].NombreCurso,
+										data.ListaCursosAprobados[i].Creditos,
+										data.ListaCursosAprobados[i].FechaAprobacion,
+										data.ListaCursosAprobados[i].Nota,
+										data.ListaCursosAprobados[i].FormaAprobacionListado);
 							}
+							$('#content').html('');
 						},
-						fail : function(error) {
-							alert("No se pudo establecer conexión.");
+						error : function(error) {
+							$('#content')
+									.html(
+											'<div align="center"><h4>Sin Conexión<h2></div>');
+							ListDBValues();
+							ListDBValues2();
 						}
 					});
 		}
@@ -328,7 +363,7 @@
 				"observaciones" : observacion
 			};
 			cursos.push(mydata);
-			$('#table').bootstrapTable("load", cursos);
+			$('#table-listado').bootstrapTable("load", cursos);
 		}
 	</script>
 </body>
