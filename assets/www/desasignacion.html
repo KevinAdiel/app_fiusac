@@ -187,7 +187,7 @@
 			var dataString = 'page=' + page;
 			$
 					.ajax({
-						type : "GET",
+						type : "POST",
 						url : "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
 						dataType : "json",
 						timeout : 10000,
@@ -197,6 +197,9 @@
 							parametros : param
 						},
 						success : function(data) {
+							if(data.sinsesion == 1){
+								enviarInfo('index');
+							}
 							vaciarTablaDesasignacion();
 							tam = data.length;
 							if (tam == 0) {

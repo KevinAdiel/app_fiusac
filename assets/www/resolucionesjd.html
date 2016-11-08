@@ -160,7 +160,7 @@
 					'<div align="center"><img src="ajax-loader.gif"/></div>');
 			$
 					.ajax({
-						type : "GET",
+						type : "POST",
 						url : "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
 						dataType : "json",
 						timeout : 10000,
@@ -170,6 +170,9 @@
 							parametros : param
 						},
 						success : function(data) {
+							if(data.sinsesion == 1){
+								enviarInfo('index');
+							}
 							tam = data.length;
 							vaciarTablaResolucionjd();
 							for (i = 0; i < tam; i++) {

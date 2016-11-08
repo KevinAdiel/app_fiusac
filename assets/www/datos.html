@@ -203,7 +203,7 @@
 							onBodyLoad();
 							$
 									.ajax({
-										type : "GET",
+										type : "POST",
 										url : "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
 										dataType : "json",
 										data : {
@@ -212,6 +212,9 @@
 											parametros : carnet
 										},
 										success : function(data) {
+											if(data.sinsesion == 1){
+												enviarInfo('index');
+											}
 											vaciarTablaEstudiante();
 											agregarInfo('nombre', data.nombre
 													+ ' ' + data.apellido);

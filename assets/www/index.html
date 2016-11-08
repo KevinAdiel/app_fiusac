@@ -9,6 +9,7 @@
 <link href="css/datepicker3.css" rel="stylesheet">
 <link href="css/styles.css" rel="stylesheet">
 <script src="js/general.js"></script>
+<script src="js/md5.js"></script>
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -27,6 +28,7 @@
 					<img alt="Logo FIUSAC" height="90" width="200" src="19.png">
 				</div>
 				<div class="panel-heading">Inicio de sesión</div>
+				<div id="content"></div>
 				<div class="panel-body">
 					<form role="form">
 						<fieldset>
@@ -35,8 +37,8 @@
 									placeholder="Usuario" name="carnet" type="number" autofocus="">
 							</div>
 							<div class="form-group">
-								<label>Contraseña</label> <input class="form-control"
-									placeholder="Contraseña" name="password" type="password"
+								<label>Contraseña</label> <input id="pass" class="form-control"
+									placeholder="Contraseña" name="pass" type="password"
 									value="">
 							</div>
 							<div class="form-group">
@@ -105,12 +107,68 @@
 			eliminarTablaDatosListado();
 			eliminarTablaCursoAprobado();
 			eliminarTablaEstudiante();
+			$
+			.ajax({
+				type : "POST",
+				url : "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
+				dataType : "json",
+				data : {
+					logout : 1
+				},
+				success : function(data) {
+					//alert(JSON.stringify(data));
+				},
+				error : function(error) {
+					alert(JSON.stringify(error));
+					$('#content')
+							.html(
+									'<div align="center"><h4>Sin Conexión<h2></div>');
+				}
+			});
 		});
 
 		function enviarInfo() {
-
 			carnet = document.getElementById("carnet").value;
 			carrera = document.getElementById("carrera").value;
+			password = document.getElementById("pass").value;
+			$
+					.ajax({
+						type : "POST",
+						url : "https://www.ingenieria.usac.edu.gt/app_fiusac/llamadasAjax.php",
+						dataType : "json",
+						data : {
+							login : 1,
+							token : md5(carnet + password + carrera)
+						},
+						success : function(data) {
+							if(data.token == -1){
+								alert("Credenciales incorrectas");
+							}else{
+								pagina = "datos.html";
+								nombres = "carnet,carrera";
+								pagina += "?";
+								nomVec = nombres.split(",");
+								for (i = 0; i < nomVec.length; i++) {
+									if (i == 0) {
+										pagina += nomVec[i] + "=" + carnet + "&";
+									} else {
+										pagina += nomVec[i] + "=" + carrera + "&";
+									}
+								}
+								pagina = pagina.substring(0, pagina.length - 1);
+								//alert(pagina);
+								location.href = pagina;
+							}
+						},
+						error : function(error) {
+							alert(JSON.stringify(error));
+							$('#content')
+									.html(
+											'<div align="center"><h4>Sin Conexión<h2></div>');
+							//ListDBValues();
+						}
+					});
+			/*
 			pagina = "datos.html";
 			nombres = "carnet,carrera";
 			pagina += "?";
@@ -124,7 +182,7 @@
 			}
 			pagina = pagina.substring(0, pagina.length - 1);
 			//alert(pagina);
-			location.href = pagina;
+			location.href = pagina;*/
 		}
 	</script>
 </body>
